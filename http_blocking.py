@@ -14,7 +14,7 @@ HOSTNAME = "slowwly.robertomurray.co.uk"
 PORT = 80
 ADDRESS = (HOSTNAME, PORT)
 BUFFER_SIZE = 4096
-
+REQUEST = b"GET /delay/10000/url/http://www.google.co.uk HTTP/1.1\r\nHost: slowwly.robertomurray.co.uk\r\n\r\n"
 
 def blocking_request():
     """Send HTTP request to a slow website.
@@ -22,9 +22,11 @@ def blocking_request():
     """
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(ADDRESS)
-    header = b"GET /delay/10000/url/http://www.google.co.uk HTTP/1.1\r\nHost: slowwly.robertomurray.co.uk\r\n\r\n"
+    # True is the default value
+    client.setblocking(True)
+
     logging.info("send request")
-    client.sendall(header)
+    client.sendall(REQUEST)
     data = ""
 
     """
