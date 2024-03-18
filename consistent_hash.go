@@ -69,7 +69,7 @@ func (hr *HashRing) GetNode(key string) string {
 	return nodes[i]
 }
 
-func main() {
+func main_dev() {
 	// Create a new HashRing with 3 nodes and replication factor of 2
 	nodes := []string{"node1", "node2", "node3"}
 	replication := 2
