@@ -1,6 +1,14 @@
 package main
 
+import (
+	"errors"
+
+	"github.com/rs/zerolog/log"
+)
+
 // KVStore represents a simple key-value store
+
+var errKeyNotFound = errors.New("key not found")
 
 type KVStore struct {
 	data map[string]string
@@ -11,7 +19,14 @@ func NewKVStore() *KVStore {
 }
 
 func (kv *KVStore) Get(key string) (string, error) {
-	return kv.data[key], nil
+	value, ok := kv.data[key]
+
+	// use zero log to debug the key and value received
+	log.Debug().Str("key", key).Str("value", value).Msg("Get key and value")
+	if !ok {
+		return "", errKeyNotFound
+	}
+	return value, nil
 }
 
 func (kv *KVStore) Set(key string, value string) {

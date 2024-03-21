@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -25,8 +26,11 @@ func (kvRestService *KVRestService) handleGet(w http.ResponseWriter, r *http.Req
 	fmt.Println("received url: ", r.URL.String())
 	value, err := kvRestService.kvStore.Get(key)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
+		if errors.Is(err, errKeyNotFound) {
+			http.Error(w, err.Error(), http.StatusNotFound)
+		} else {
+			panic(err)
+		}
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(value))
