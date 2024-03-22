@@ -6,6 +6,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func init() {
+	// Enable caller information globally
+	log.Logger = log.With().Caller().Logger()
+}
+
 // KVStore represents a simple key-value store
 
 var errKeyNotFound = errors.New("key not found")
